@@ -1,10 +1,188 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DEHP</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Dynamic Execution Horizon Prediction learns when chunk-based robot policies should replan.">
+  <meta name="keywords" content="DEHP, action chunking, robot learning, reinforcement learning, diffusion policy">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DEHP: Dynamic Execution Horizon Prediction</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script defer src="./static/js/index.js"></script>
 </head>
 <body>
-    <h1>Dynamic Execution Horizon Prediction</h1>
-    <p>Project page coming soon.</p>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="#">
+      DEHP
+    </a>
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="main-navbar">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div id="main-navbar" class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="#abstract">Abstract</a>
+      <a class="navbar-item" href="#method">Method</a>
+      <a class="navbar-item" href="#results">Results</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero publication-header">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Dynamic Execution Horizon Prediction for Chunk-based Robot Policies</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video class="teaser-video" autoplay controls muted loop playsinline>
+        <source src="./static/videos/dehp-video-v1.mp4" type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <span class="dehp">DEHP</span> learns when to commit to a chunk and when to replan, improving frozen chunk-based robot policies without changing their action generator.
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Action chunking has become a standard design in modern robot policies, where the policy predicts a sequence of actions and executes a fixed number of them before replanning. This fixed execution horizon creates a trade-off: long horizons improve smoothness and efficiency, while short horizons improve reactivity during fine-grained manipulation.
+          </p>
+          <p>
+            Dynamic Execution Horizon Prediction (DEHP) trains a lightweight execution-horizon head with online reinforcement learning while keeping the pretrained chunk policy completely frozen. The horizon head conditions on the current observation and the full predicted action chunk, then chooses how many actions to execute before the next policy query.
+          </p>
+          <p>
+            Across high-precision and long-horizon manipulation tasks, DEHP improves success over tuned fixed-horizon baselines. Qualitative analysis shows that it predicts shorter horizons during grasp alignment and insertion, and longer horizons during free-space motion.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section is-light" id="method">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+            DEHP leaves the base action-chunking policy fixed. At each decision point, the base policy predicts a length-H action chunk, and DEHP samples a categorical execution horizon h in {1, ..., H}. The robot executes only the first h actions and discards the rest before replanning.
+          </p>
+        </div>
+        <img class="paper-figure" src="./static/images/fig2.png" alt="Inference comparison between fixed execution horizon and dynamic execution horizon.">
+        <div class="columns method-points">
+          <div class="column">
+            <h3 class="title is-5">Frozen Base Policy</h3>
+            <p>The action generator is treated as a black box, making the method compatible with pretrained chunk policies such as Diffusion Policy.</p>
+          </div>
+          <div class="column">
+            <h3 class="title is-5">Chunk-Level PPO</h3>
+            <p>The horizon head is optimized from sparse task return using a semi-Markov chunk-level PPO formulation.</p>
+          </div>
+          <div class="column">
+            <h3 class="title is-5">Adaptive Replanning</h3>
+            <p>Long horizons are used when motion is stable; short horizons are used when contact and alignment require frequent feedback.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Results</h2>
+        <div class="content has-text-justified">
+          <p>
+            In multi-stage peg insertion, DEHP improves overall success by 23.03% on average over fixed-horizon behavior cloning across action-noise levels, with the largest gains on the tightest insertion stage. The same adaptive horizon idea also improves performance as the amount of demonstration data increases.
+          </p>
+        </div>
+        <img class="paper-figure" src="./static/images/fig3.png" alt="Multi-stage insertion success rates under action noise and demonstration data scale.">
+
+        <div class="content has-text-justified">
+          <p>
+            We also show that dynamic execution horizons transfer beyond the multi-stage insertion setting. With the same frozen base policy, DEHP improves over the best fixed-horizon baselines on long-horizon FurnitureBench assembly tasks and on the high-precision bimanual needle-syringe task, indicating that learned replanning frequency is useful across both broad task progress and contact-sensitive manipulation.
+          </p>
+        </div>
+
+        <img class="paper-figure" src="./static/images/fig4.png" alt="Learning curves across one-leg, round-table, and needle-syringe tasks.">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Rollouts</h2>
+        <div class="content has-text-justified">
+          <p>
+            These rollouts illustrate DEHP across fine-grained insertion and long-horizon assembly tasks. The learned execution horizon allows the robot to move efficiently through stable phases while replanning more frequently around contact-rich alignment and insertion.
+          </p>
+        </div>
+        <div class="rollout-grid">
+          <div class="rollout-item">
+            <video autoplay controls muted loop playsinline>
+              <source src="./static/videos/needle_bimanual_rollout.mp4" type="video/mp4">
+            </video>
+            <h3 class="title is-5">Bimanual Needle-Syringe</h3>
+          </div>
+          <div class="rollout-item">
+            <video autoplay controls muted loop playsinline>
+              <source src="./static/videos/multiinsert_rollout.mp4" type="video/mp4">
+            </video>
+            <h3 class="title is-5">Multi-Stage Insertion</h3>
+          </div>
+          <div class="rollout-item">
+            <video autoplay controls muted loop playsinline>
+              <source src="./static/videos/one_leg_rollout.mp4" type="video/mp4">
+            </video>
+            <h3 class="title is-5">One-Leg Assembly</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p>
+            Website template adapted from the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies project page</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>

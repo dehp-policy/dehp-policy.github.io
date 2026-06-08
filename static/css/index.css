@@ -1,0 +1,156 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+  color: #202124;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.navbar {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+.column {
+  min-width: 0;
+}
+
+.dehp {
+  font-variant: small-caps;
+  font-weight: 700;
+}
+
+.publication-header .hero-body {
+  padding-bottom: 2rem;
+}
+
+.publication-title {
+  font-family: 'Google Sans', sans-serif;
+  line-height: 1.08;
+  overflow-wrap: break-word;
+}
+
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.teaser-video,
+.paper-figure {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #d8dbe0;
+  background: #fff;
+}
+
+.teaser-video {
+  margin-bottom: 1.25rem;
+}
+
+.paper-figure {
+  margin: 1.25rem 0 2rem;
+}
+
+.section.is-light {
+  background: #f6f8fb;
+}
+
+.method-points {
+  margin-top: 1rem;
+}
+
+.method-points .column {
+  border-left: 3px solid #3273dc;
+  padding-left: 1rem;
+}
+
+.method-points p {
+  color: #4b5563;
+}
+
+.rollout-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.rollout-item {
+  background: #fff;
+  border: 1px solid #d8dbe0;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.rollout-item video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #111;
+}
+
+.rollout-item .title {
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+pre {
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+@media screen and (max-width: 768px) {
+  .hero-body,
+  .section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .container,
+  .container.is-max-desktop {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .publication-title {
+    font-size: 1.55rem !important;
+    max-width: 100%;
+    text-wrap: balance;
+  }
+
+  .teaser .subtitle {
+    font-size: 1.05rem;
+  }
+
+  .content.has-text-justified {
+    text-align: left !important;
+  }
+
+  .method-points .column {
+    border-left: none;
+    border-top: 3px solid #3273dc;
+    padding-left: 0.75rem;
+  }
+
+}
+
+@media screen and (max-width: 600px) {
+  .publication-title {
+    font-size: 1.35rem !important;
+  }
+
+}
